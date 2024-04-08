@@ -1,18 +1,18 @@
 package com.phonebook.tests;
 /*
-@date 05.04.2024
+@date 08.04.2024
 @author Mihail Nedioglo
 */
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class AddContactTests extends TestBase{
+public class DeleteContactTests extends TestBase {
 
     @BeforeMethod
-    public void ensurePrecondition(){
+    public void ensurePrecondition() {
         //click on Login Link
         clickOnLoginLink();
         //enter email
@@ -22,14 +22,7 @@ public class AddContactTests extends TestBase{
         //click on login button [name ='login']
         clickOnLoginButton();
 
-    }
-
-    @Test
-    public void addContactPositiveTest(){
-
-        //click on Add link
         clickOnAddLink();
-        //enter name
         fillAddContactForm(new Contact()
                 .setName("Karl")
                 .setLastName("Adam")
@@ -37,15 +30,20 @@ public class AddContactTests extends TestBase{
                 .setEmail("adam@gm.com")
                 .setAddress("Berlin")
                 .setDescription("goalkeeper"));
-        //click on Save button
         clickOnSaveButton();
-        //assert Contact is added by text
-        Assert.assertTrue(isContactCreated("Karl"));
+
     }
 
-    @AfterMethod
-    public void postCondition() {
-        removeContact();
+    @Test
+    public void deleteContactPositive() {
+        int sizeBefore = sizeOfContacts();
+        click(By.cssSelector(".contact-item_card__2SOIM"));
+        click(By.xpath("//button[.='Remove']"));
+
+
+        pause(500);
+        int sizeAfter = sizeOfContacts();
+        Assert.assertEquals(sizeAfter, sizeBefore - 1);
     }
 
 

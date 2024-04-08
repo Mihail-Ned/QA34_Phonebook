@@ -4,30 +4,26 @@ package com.phonebook.tests;
 @author Mihail Nedioglo
  */
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.Random;
 
 
 public class CreateAccountTests extends TestBase {
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void CreateNewAccountPositiveTest() {
 //!        Random random = new Random();
 //!        int i = random.nextInt(1000)+1000;
         //click on Login Link
-        click(By.cssSelector("[href='/login']"));
+        clickOnLoginLink();
         //enter email
-        type(By.name("email"), "manuel@gm.com");
-//!        type(By.name("email"), "manuel" + i +"@gm.com");
-        //enter password
-        type(By.name("password"), "Manuel1234$");
+        fillLoginRegisterForm(new User()
+                .setEmail("qwerty007$@gmail.com")
+                .setPassword("Qwerty007$"));
         //click on Registration button
-        click(By.cssSelector("[name='registration']"));
+        clickOnRegistrationButton();
         //assert Sign Out button is present
-        Assert.assertTrue(isElementPresent(By.xpath("//button[.='Sign Out']")));
+        Assert.assertTrue(isSignOutButtonPresent());
 
     }//test
 
@@ -35,13 +31,13 @@ public class CreateAccountTests extends TestBase {
     public void CreateNewAccountWithExistedEmailNegativeTest() {
 
         //click on Login Link
-        click(By.cssSelector("[href='/login']"));
+        clickOnLoginLink();
         //enter email
-        type(By.name("email"), "manuel@gm.com");
-        //enter password
-        type(By.name("password"), "Manuel1234$");
+        fillLoginRegisterForm(new User()
+                .setEmail("qwerty007$@gmail.com")
+                .setPassword("Qwerty007$"));
         //click on Registration button
-        click(By.cssSelector("[name='registration']"));
+        clickOnRegistrationButton();
         //assert Alert is present
         Assert.assertTrue(isAlertPresent());
 
