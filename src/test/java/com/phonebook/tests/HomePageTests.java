@@ -5,35 +5,21 @@ package com.phonebook.tests;
 */
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
 
-public class HomePageTests {
-    WebDriver driver;
-
-    @BeforeMethod
-    public void setUp () {
-        driver = new ChromeDriver();
-        driver.get("https://telranedu.web.app");
-        //maximize browser to windows
-        driver.manage().window().maximize();
-        // wait for elements on the site to load before starting the test
-        driver.manage().timeouts(). implicitlyWait(Duration.ofSeconds(10));
-    }
+public class HomePageTests extends TestBase {
 
     @Test
-    public void isHomeComponentPresent() {
-        driver.findElement(By.cssSelector("div:nth-child(2) div h1"));
+    public void isHomeComponentPresentTest() {
+        //System.out.println("Home component is" + isHomeComponentPresent() );
+        Assert.assertTrue(isHomeComponentPresent());
     }
 
-    @AfterMethod(enabled = false)
-    public void tearDown() {
-        driver.quit();
+
+    public boolean isHomeComponentPresent() {
+        return isElementPresent(By.cssSelector("div:nth-child(2) div h1"));
     }
 
 
