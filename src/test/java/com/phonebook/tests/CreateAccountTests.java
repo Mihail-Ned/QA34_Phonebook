@@ -4,42 +4,47 @@ package com.phonebook.tests;
 @author Mihail Nedioglo
  */
 
+import com.phonebook.models.User;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
 public class CreateAccountTests extends TestBase {
+    @BeforeMethod
+    public void ensurePrecondition() {
+        if (!app.getUser().isLoginLinkPresent()) {
+            app.getUser().clickOnSignOutButton();
+        }
+    }
 
     @Test(enabled = false)
     public void CreateNewAccountPositiveTest() {
 //!        Random random = new Random();
 //!        int i = random.nextInt(1000)+1000;
-        //click on Login Link
-        clickOnLoginLink();
+        app.getUser().clickOnLoginLink();
         //enter email
-        fillLoginRegisterForm(new User()
+        app.getUser().fillLoginRegisterForm(new User()
                 .setEmail("qwerty007$@gmail.com")
+//!                .setEmail("qwerty007$" + i + "@gmail.com")
                 .setPassword("Qwerty007$"));
-        //click on Registration button
-        clickOnRegistrationButton();
+        app.getUser().clickOnRegistrationButton();
         //assert Sign Out button is present
-        Assert.assertTrue(isSignOutButtonPresent());
+        Assert.assertTrue(app.getUser().isSignOutButtonPresent());
 
     }//test
 
     @Test
     public void CreateNewAccountWithExistedEmailNegativeTest() {
 
-        //click on Login Link
-        clickOnLoginLink();
+        app.getUser().clickOnLoginLink();
         //enter email
-        fillLoginRegisterForm(new User()
+        app.getUser().fillLoginRegisterForm(new User()
                 .setEmail("qwerty007$@gmail.com")
                 .setPassword("Qwerty007$"));
-        //click on Registration button
-        clickOnRegistrationButton();
+        app.getUser().clickOnRegistrationButton();
         //assert Alert is present
-        Assert.assertTrue(isAlertPresent());
+        Assert.assertTrue(app.getUser().isAlertPresent());
 
     }//test
 

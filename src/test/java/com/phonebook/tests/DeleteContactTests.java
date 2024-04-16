@@ -4,7 +4,8 @@ package com.phonebook.tests;
 @author Mihail Nedioglo
 */
 
-import org.openqa.selenium.By;
+import com.phonebook.models.Contact;
+import com.phonebook.models.User;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -13,36 +14,36 @@ public class DeleteContactTests extends TestBase {
 
     @BeforeMethod
     public void ensurePrecondition() {
-        //click on Login Link
-        clickOnLoginLink();
+        if (!app.getUser().isLoginLinkPresent()) {
+            app.getUser().clickOnSignOutButton();
+        }
+
+        app.getUser().clickOnLoginLink();
         //enter email
-        fillLoginRegisterForm(new User()
+        app.getUser().fillLoginRegisterForm(new User()
                 .setEmail("qwerty007$@gmail.com")
                 .setPassword("Qwerty007$"));
-        //click on login button [name ='login']
-        clickOnLoginButton();
+        app.getUser().clickOnLoginButton();
 
-        clickOnAddLink();
-        fillAddContactForm(new Contact()
+        app.getContact().clickOnAddLink();
+        app.getContact().fillAddContactForm(new Contact()
                 .setName("Karl")
                 .setLastName("Adam")
                 .setPhone("1234567890")
                 .setEmail("adam@gm.com")
                 .setAddress("Berlin")
                 .setDescription("goalkeeper"));
-        clickOnSaveButton();
+        app.getContact().clickOnSaveButton();
 
     }
 
     @Test
     public void deleteContactPositive() {
-        int sizeBefore = sizeOfContacts();
-        click(By.cssSelector(".contact-item_card__2SOIM"));
-        click(By.xpath("//button[.='Remove']"));
+        int sizeBefore = app.getContact().sizeOfContacts();
+        app.getContact().removeContact();
 
-
-        pause(500);
-        int sizeAfter = sizeOfContacts();
+        app.getContact().pause(1000);
+        int sizeAfter = app.getContact().sizeOfContacts();
         Assert.assertEquals(sizeAfter, sizeBefore - 1);
     }
 
