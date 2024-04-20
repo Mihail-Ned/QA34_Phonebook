@@ -4,6 +4,7 @@ package com.phonebook.tests;
 @author Mihail Nedioglo
  */
 
+import com.phonebook.data.UserData;
 import com.phonebook.models.User;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -25,9 +26,9 @@ public class CreateAccountTests extends TestBase {
         app.getUser().clickOnLoginLink();
         //enter email
         app.getUser().fillLoginRegisterForm(new User()
-                .setEmail("qwerty007$@gmail.com")
+                .setEmail(UserData.EMAIL)
 //!                .setEmail("qwerty007$" + i + "@gmail.com")
-                .setPassword("Qwerty007$"));
+                .setPassword(UserData.PASSWORD));
         app.getUser().clickOnRegistrationButton();
         //assert Sign Out button is present
         Assert.assertTrue(app.getUser().isSignOutButtonPresent());
@@ -40,8 +41,8 @@ public class CreateAccountTests extends TestBase {
         app.getUser().clickOnLoginLink();
         //enter email
         app.getUser().fillLoginRegisterForm(new User()
-                .setEmail("qwerty007$@gmail.com")
-                .setPassword("Qwerty007$"));
+                .setEmail(UserData.EMAIL)
+                .setPassword(UserData.PASSWORD));
         app.getUser().clickOnRegistrationButton();
         //assert Alert is present
         Assert.assertTrue(app.getUser().isAlertPresent());

@@ -4,6 +4,8 @@ package com.phonebook.tests;
 @author Mihail Nedioglo
 */
 
+import com.phonebook.data.ContactData;
+import com.phonebook.data.UserData;
 import com.phonebook.models.Contact;
 import com.phonebook.models.User;
 import org.testng.Assert;
@@ -23,8 +25,8 @@ public class AddContactTests extends TestBase{
         app.getUser().clickOnLoginLink();
         //enter email
         app.getUser().fillLoginRegisterForm(new User()
-                .setEmail("qwerty007$@gmail.com")
-                .setPassword("Qwerty007$"));
+                .setEmail(UserData.EMAIL)
+                .setPassword(UserData.PASSWORD));
         //click on login button [name ='login']
         app.getUser().clickOnLoginButton();
 
@@ -36,16 +38,16 @@ public class AddContactTests extends TestBase{
         app.getContact().clickOnAddLink();
         //enter name
         app.getContact().fillAddContactForm(new Contact()
-                .setName("Karl")
-                .setLastName("Adam")
-                .setPhone("1234567890")
-                .setEmail("adam@gm.com")
-                .setAddress("Berlin")
-                .setDescription("goalkeeper"));
+                .setName(ContactData.NAME)
+                .setLastName(ContactData.LAST_NAME)
+                .setPhone(ContactData.PHONE)
+                .setEmail(ContactData.CONTACT_EMAIL)
+                .setAddress(ContactData.ADDRESS)
+                .setDescription(ContactData.DESC));
         //click on Save button
         app.getContact().clickOnSaveButton();
         //assert Contact is added by text
-        Assert.assertTrue(app.getContact().isContactCreated("Karl"));
+        Assert.assertTrue(app.getContact().isContactCreated(ContactData.NAME));
     }
 
     @AfterMethod
