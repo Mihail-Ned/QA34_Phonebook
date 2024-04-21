@@ -8,15 +8,25 @@ import com.phonebook.data.ContactData;
 import com.phonebook.data.UserData;
 import com.phonebook.models.Contact;
 import com.phonebook.models.User;
+import com.phonebook.utils.DataProviders;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class AddContactTests extends TestBase{
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class AddContactTests extends TestBase {
 
     @BeforeMethod
-    public void ensurePrecondition(){
+    public void ensurePrecondition() {
         if (!app.getUser().isLoginLinkPresent()) {
             app.getUser().clickOnSignOutButton();
         }
@@ -33,7 +43,7 @@ public class AddContactTests extends TestBase{
     }
 
     @Test
-    public void addContactPositiveTest(){
+    public void addContactPositiveTest() {
         //click on Add link
         app.getContact().clickOnAddLink();
         //enter name
@@ -53,6 +63,41 @@ public class AddContactTests extends TestBase{
     @AfterMethod
     public void postCondition() {
         app.getContact().removeContact();
+    }
+
+    //
+    @Test(dataProvider = "addNewContact", dataProviderClass = DataProviders.class)
+    public void addContactPositiveTestFromDataProvider(String name, String lastName, String phone,
+                                                       String email, String address, String description) {
+        //click on Add link
+        app.getContact().clickOnAddLink();
+        //enter name
+        app.getContact().fillAddContactForm(new Contact()
+                .setName(name)
+                .setLastName(lastName)
+                .setPhone(phone)
+                .setEmail(email)
+                .setAddress(address)
+                .setDescription(description));
+        //click on Save button
+        app.getContact().clickOnSaveButton();
+        //assert Contact is added by text
+        Assert.assertTrue(app.getContact().isContactCreated(name));
+    }
+
+    //
+    @Test(dataProvider = "addNewContactFromCsvFile", dataProviderClass = DataProviders.class)
+    public void addContactPositiveTestFromDataProviderWithCsvFile(Contact contact) {
+
+        //click on Add link
+        app.getContact().clickOnAddLink();
+        //enter name
+        app.getContact().fillAddContactForm(contact);
+        //click on Save button
+        app.getContact().clickOnSaveButton();
+
+        //assert Contact is added by text
+        Assert.assertTrue(app.getContact().isContactCreated(contact.getName()));
     }
 
 
